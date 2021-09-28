@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.example.CheckTraining1.CalendarioActivity"
+    android:background="#FFFFFF"
+
+    >
+
+
+    <ImageView
+        android:layout_width="411dp"
+        android:layout_height="152dp"
+        android:background="@drawable/cabe"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"/>
+
+
+    <com.github.sundeepk.compactcalendarview.CompactCalendarView
+        android:id="@+id/calendarView"
+        android:layout_width="313dp"
+        android:layout_height="251dp"
+        android:layout_gravity="center"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        app:compactCalendarBackgroundColor="#FFFF"
+        app:compactCalendarCurrentDayBackgroundColor="#D0f1DD"
+        app:compactCalendarCurrentSelectedDayBackgroundColor="#D0f1DD"
+        app:compactCalendarMultiEventIndicatorColor="#fff"
+        app:compactCalendarTargetHeight="250dp"
+
+        app:compactCalendarTextColor="@color/preto"
+        app:compactCalendarTextSize="14sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="252dp"
+        android:layout_height="54dp"
+        android:layout_gravity="top|center"
+        android:layout_marginLeft="100px"
+        android:layout_marginTop="150px"
+        android:fontFamily="@font/coolveticarg"
+        android:textStyle="bold"
+        android:shadowColor="@color/preto"
+        android:shadowDx="2"
+        android:shadowDy="3"
+        android:shadowRadius="2"
+        android:text="Calendário"
+        android:textAlignment="center"
+        android:textColor="#FFFFFF"
+        android:textSize="30dp"
+
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.849"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.067" />
+
+    <TextView
+        android:id="@+id/tv"
+        android:layout_width="244dp"
+        android:layout_height="36dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="500px"
+        android:textAlignment="center"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.534"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.818" />
+
+
+    <Button
+        android:id="@+id/bdelet"
+        android:layout_width="118dp"
+        android:layout_height="27dp"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="50dp"
+        android:layout_marginBottom="280px"
+        android:background="@drawable/botoes"
+
+
+        android:text="Apagar Treino"
+        android:textColor="#FFFF"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.962"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.936" />
+
+    <ImageView
+        android:id="@+id/imageView8"
+        android:layout_width="89dp"
+        android:layout_height="135dp"
+android:layout_marginLeft="15dp"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView"
+        app:layout_constraintEnd_toStartOf="@+id/textView2"
+        app:layout_constraintHorizontal_bias="0.47"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:srcCompat="@drawable/calendario" />
+
+    <com.etebarian.meowbottomnavigation.MeowBottomNavigation
+        android:id="@+id/bottomNavigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
+        app:mbn_backgroundBottomColor="@color/Menucolor"
+        app:mbn_circleColor="@color/circleColor"
+        app:mbn_countBackgroundColor="@color/countBackgoundColor"
+        app:mbn_countTextColor="@color/countTextColor"
+        app:mbn_defaultIconColor="@color/defaultIconColor"
+        app:mbn_selectedIconColor="#000000"
+        >
+
+    </com.etebarian.meowbottomnavigation.MeowBottomNavigation>
+
+    <TextView
+        android:id="@+id/mes"
+        android:layout_width="320dp"
+        android:layout_height="32dp"
+        android:layout_gravity="center"
+        android:fontFamily="@font/coolveticarg"
+
+        android:textSize="20dp"
+        android:textAlignment="center"
+        android:textColor="@color/preto"
+        android:layout_marginBottom="150dp"
+        android:background="@color/Calendar"
+        android:text="" />
+
+
+
+</FrameLayout>

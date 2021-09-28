@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#09B44D</color>
+    <color name="colorPrimaryDark">#3700B3</color>
+    <color name="colorAccent">#03DAC5</color>
+<color name="preto"> #000000</color>
+    <color name="botao">#66f9b0</color>
+    <color name="text_shadow">#7F000000</color>
+
+
+    <color name="selectedIconColor">#04E1F8</color>
+    <color name="defaultIconColor">#F6f6f6</color>
+    <color name="countTextColor">#fff</color>
+    <color name="countBackgoundColor">#f45e0b</color>
+    <color name="circleColor">#fff</color>
+    <color name="backgroundBottomColor">#04e1f8</color>
+    <color name="shadowColor">#2e2e2e</color>
+    <color name="Menucolor">#09B44D</color>
+    <color name="Calendar">#D0f1DD</color>
+</resources>

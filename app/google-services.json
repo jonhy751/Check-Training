@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "67233950225",
+    "firebase_url": "https://checktraining-861d6-default-rtdb.firebaseio.com",
+    "project_id": "checktraining-861d6",
+    "storage_bucket": "checktraining-861d6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67233950225:android:31673f97c6f4322ffe5fb0",
+        "android_client_info": {
+          "package_name": "com.example.CheckTraining1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67233950225-p8u7m9eo5cmseekl3pgbe6toukipqv93.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.CheckTraining1",
+            "certificate_hash": "ab5a1ce3d6d879845811ef89d39349c035fe2104"
+          }
+        },
+        {
+          "client_id": "67233950225-qrhl7sphbnsn62bagok0nsk81b51t6mk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCIfu6JWDOCtiTaOub60O3P4Z9dgvtaSOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67233950225-qrhl7sphbnsn62bagok0nsk81b51t6mk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

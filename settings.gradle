@@ -1,0 +1,2 @@
+rootProject.name='Aplicativo Peridizaçao de Treinos'
+include ':app'
