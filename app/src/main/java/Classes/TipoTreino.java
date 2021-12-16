@@ -2,7 +2,14 @@ package Classes;
 
 public class TipoTreino {
     private String TipoTreino;
-    private String data, time, descriçao,local,obs;
+    private String data;
+    private String time;
+    private String descriçao;
+    private String local;
+    private String obs;
+    private String instituicao;
+
+
 
     public String getTipoTreino() {
         return TipoTreino;
@@ -26,13 +33,23 @@ public class TipoTreino {
         this.obs = obs;
     }
 
-    public TipoTreino(String tipoTreino, String data, String time, String descriçao, String local, String obs) {
+
+    public String getInstituicao() {
+        return instituicao;
+    }
+
+    public void setInstituicao(String instituicao) {
+        this.instituicao = instituicao;
+    }
+
+    public TipoTreino(String tipoTreino, String data, String time, String descriçao, String local, String obs, String instituicao) {
         TipoTreino = tipoTreino;
         this.data = data;
         this.time = time;
         this.descriçao = descriçao;
         this.local = local;
         this.obs = obs;
+        this.instituicao = instituicao;
     }
 
     public String getLocal() {
@@ -63,7 +80,7 @@ public class TipoTreino {
         this.time = time;
     }
 
-    public TipoTreino() {
+    public TipoTreino(String tipoTreino, String time, String descricao, String local, String obs, String ins) {
     }
 
 

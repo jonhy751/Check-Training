@@ -11,23 +11,24 @@
 
 
     <ImageView
-        android:layout_width="411dp"
-        android:layout_height="152dp"
+        android:layout_width="621dp"
+        android:layout_height="225dp"
         android:background="@drawable/cabe"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"/>
+        app:layout_constraintVertical_bias="0.0" />
 
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/calendarView"
-        android:layout_width="313dp"
-        android:layout_height="251dp"
+        android:layout_width="450dp"
+        android:layout_height="346dp"
         android:layout_gravity="center"
         android:paddingLeft="10dp"
+        android:layout_marginTop="40dp"
         android:paddingRight="10dp"
         app:compactCalendarBackgroundColor="#FFFF"
         app:compactCalendarCurrentDayBackgroundColor="#D0f1DD"
@@ -40,12 +41,11 @@
 
     <TextView
         android:id="@+id/textView2"
-        android:layout_width="252dp"
-        android:layout_height="54dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="top|center"
-        android:layout_marginTop="150px"
+        android:layout_marginTop="100px"
         android:fontFamily="@font/coolveticarg"
-        android:textStyle="bold"
         android:shadowColor="@color/preto"
         android:shadowDx="2"
         android:shadowDy="3"
@@ -53,7 +53,8 @@
         android:text="Calendário"
         android:textAlignment="center"
         android:textColor="#FFFFFF"
-        android:textSize="30dp"
+        android:textSize="50dp"
+        android:textStyle="bold"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,7 +68,7 @@
         android:layout_width="244dp"
         android:layout_height="36dp"
         android:layout_gravity="bottom|center"
-        android:layout_marginBottom="500px"
+        android:layout_marginBottom="200px"
         android:textAlignment="center"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
@@ -84,7 +85,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginRight="50dp"
-        android:layout_marginBottom="280px"
+        android:layout_marginBottom="200px"
         android:background="@drawable/ic_delete_forever_black_24dp"
 
         app:layout_constraintBottom_toBottomOf="parent"
@@ -104,25 +105,24 @@
         app:mbn_countBackgroundColor="@color/countBackgoundColor"
         app:mbn_countTextColor="@color/countTextColor"
         app:mbn_defaultIconColor="@color/defaultIconColor"
-        app:mbn_selectedIconColor="#000000"
-        >
+        app:mbn_selectedIconColor="#000000">
 
     </com.etebarian.meowbottomnavigation.MeowBottomNavigation>
 
     <TextView
         android:id="@+id/mes"
-        android:layout_width="320dp"
-        android:layout_height="32dp"
+        android:layout_width="453dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:fontFamily="@font/coolveticarg"
 
-        android:textSize="20dp"
+        android:layout_marginBottom="150dp"
+
+        android:background="@color/Calendar"
+        android:fontFamily="@font/coolveticarg"
+        android:text=""
         android:textAlignment="center"
         android:textColor="@color/preto"
-        android:layout_marginBottom="150dp"
-        android:background="@color/Calendar"
-        android:text="" />
-
+        android:textSize="20dp" />
     <Button
         android:id="@+id/buttonnext"
         android:layout_width="21dp"
@@ -137,7 +137,6 @@
         android:layout_height="26dp"
         android:layout_gravity="center|right"
         android:layout_marginRight="20dp"
-    android:background="@drawable/ic_keyboard_arrow_right_black_24dp" />
-
+        android:background="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
 </FrameLayout>

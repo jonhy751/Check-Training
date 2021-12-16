@@ -7,48 +7,45 @@
     android:background="@drawable/moldurapdf"
     tools:context="com.example.CheckTraining1.ViewPdfActivity">
 
+
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/tvdata"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nesse dia Haverá..."
-        android:textSize="25dp"
-        android:textStyle="italic"
-      android:textColor="@android:color/black"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.019" />
-
-
-
-    <TextView
-        android:id="@+id/Dadostv"
-        android:layout_width="348dp"
-        android:layout_height="215dp"
-        android:text="Deu algo de errado :("
-        android:textSize="17dp"
-        android:textStyle="bold"
         android:textColor="@android:color/black"
+        android:textSize="20dp"
+        android:textStyle="italic"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.447"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.196" />
+        app:layout_constraintVertical_bias="0.13" />
+
 
     <Button
         android:id="@+id/bsalvarr"
-        android:layout_width="41dp"
-        android:layout_height="41dp"
+        android:layout_width="73dp"
+        android:layout_height="56dp"
         android:background="@drawable/save"
         android:text=""
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.956"
+        app:layout_constraintHorizontal_bias="0.914"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.06" />
+        app:layout_constraintVertical_bias="0.964" />
+
+    <ListView
+        android:id="@+id/list"
+        android:layout_width="329dp"
+        android:layout_height="576dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.663" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

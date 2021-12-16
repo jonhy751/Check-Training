@@ -52,7 +52,7 @@ public class cadastrarActivity extends AppCompatActivity {
         nome = (EditText) findViewById(R.id.editCnome);
         rep = (EditText) findViewById(R.id.editRep);
         sp = (Spinner) findViewById(R.id.spinner);
-        Spinner();
+
         if (mAuth.getCurrentUser() != null) {
 
         }
@@ -98,7 +98,7 @@ public class cadastrarActivity extends AppCompatActivity {
 
                                 }
                             });
-                            Toast.makeText(cadastrarActivity.this, "Cadastrado", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(cadastrarActivity.this, "Usuário Cadastrado", Toast.LENGTH_SHORT).show();
 
                             DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
                             ref.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
@@ -139,45 +139,6 @@ public class cadastrarActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public void finish() {
-        super.finish();
-        overridePendingTransition(R.xml.mover_esquerda, R.xml.fade_out);
-    }
 
-    public void Spinner() {
-        final List<String>[] linguagens = new List[]{new ArrayList<>()};
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("Instituicoes").addListenerForSingleValueEvent(new ValueEventListener() {
-
-
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()) {
-                    for (DataSnapshot s : dataSnapshot.getChildren()) {
-                        int i = 0;
-
-
-                        linguagens[i] = new ArrayList<>(Arrays.asList(s.getValue().toString()));
-                        i++;
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-for (int i = 0 ; i< linguagens.length;i++){
-    ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(this,
-            android.R.layout.simple_spinner_item, linguagens[i]);
-    dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-    sp.setAdapter(dataAdapter);
-}
-
-
-    }
 
 }

@@ -4,7 +4,22 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="com.example.CheckTraining1.CalendarioAluno">
+    <TextView
+        android:id="@+id/tvuser"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Olá,  "
+        android:fontFamily="@font/coolveticarg"
+        android:textColor="#353839"
+
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:layout_marginBottom="200dp"
+        android:layout_marginRight="100dp"
+
+        />
     <TextView
         android:id="@+id/mes2"
         android:layout_width="320dp"
@@ -51,7 +66,7 @@
         android:layout_width="252dp"
         android:layout_height="54dp"
         android:layout_gravity="top|center"
-        android:layout_marginLeft="100px"
+
         android:layout_marginTop="150px"
         android:fontFamily="@font/coolveticarg"
         android:textStyle="bold"
@@ -75,21 +90,18 @@
 
     <Button
         android:id="@+id/bsair"
-        android:layout_width="107dp"
+        android:layout_width="30dp"
         android:layout_height="33dp"
-        android:background="@drawable/botoes"
-        android:text="Sair"
-        android:textStyle="bold"
-        android:layout_gravity="bottom|right"
-        android:layout_marginBottom="300px"
-        android:layout_marginRight="50px"
-        android:textColor="#FFFF"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/ic_exit_to_app_black_24dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.111"
+        app:layout_constraintHorizontal_bias="0.043"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.937" />
+        app:layout_constraintVertical_bias="0.056" />
+
     <TextView
         android:id="@+id/tv"
         android:layout_width="wrap_content"
@@ -104,18 +116,6 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.818" />
 
-    <ImageView
-        android:id="@+id/imageView8"
-        android:layout_width="89dp"
-        android:layout_height="135dp"
-        android:layout_marginLeft="15dp"
-        app:layout_constraintBottom_toBottomOf="@+id/imageView"
-        app:layout_constraintEnd_toStartOf="@+id/textView2"
-        app:layout_constraintHorizontal_bias="0.188"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0"
-        app:srcCompat="@drawable/calendario" />
     <com.etebarian.meowbottomnavigation.MeowBottomNavigation
         android:id="@+id/bottomNavigation"
         android:layout_width="match_parent"
@@ -130,5 +130,20 @@
        >
 
     </com.etebarian.meowbottomnavigation.MeowBottomNavigation>
+    <Button
+        android:id="@+id/buttonnext"
+        android:layout_width="21dp"
+        android:layout_height="26dp"
+        android:layout_gravity="center|left"
+        android:layout_marginLeft="20dp"
+        android:background="@drawable/ic_keyboard_arrow_left_black_24dp" />
+
+    <Button
+        android:id="@+id/ButtonReturn"
+        android:layout_width="21dp"
+        android:layout_height="26dp"
+        android:layout_gravity="center|right"
+        android:layout_marginRight="20dp"
+        android:background="@drawable/ic_keyboard_arrow_right_black_24dp" />
 
 </FrameLayout>

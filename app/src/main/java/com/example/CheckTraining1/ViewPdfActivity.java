@@ -1,8 +1,5 @@
 package com.example.CheckTraining1;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,35 +8,58 @@ import android.graphics.Paint;
 import android.graphics.pdf.PdfDocument;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.example.CheckTraining.R;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class ViewPdfActivity extends AppCompatActivity {
-    TextView tv;
+    TextView tv, tvdata;
     Button salvar;
     private static final int CREATEPDF = 1;
     Bitmap scale, bitmap;
-    String dados;
+    String dados, d;
+    ListView List;
     private String Data, obs, Time, TipoTreino, DATA, descricao, local, data2;
+    ArrayList<String> Dados = new ArrayList<String>();
+    ArrayList<String> dados1 = new ArrayList<String>();
+    ArrayAdapter<String> arrayAdapter;
+    int var;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_pdf);
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.moldurapdf);
-        tv = (TextView) findViewById(R.id.Dadostv);
+
         salvar = (Button) findViewById(R.id.bsalvarr);
+        List = (ListView) findViewById(R.id.list);
+        tvdata = (TextView) findViewById(R.id.tvdata);
+        tvdata.setText("Na data " + getIntent().getStringExtra("data") + " haverá:");
         dados = getIntent().getStringExtra("dados");
-        tv.setText(getIntent().getStringExtra("dados"));
+        Dados = preenherDados();
+
+
         salvar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -47,7 +67,118 @@ public class ViewPdfActivity extends AppCompatActivity {
                 savepdf(data);
             }
         });
+
+
     }
+
+    private ArrayList<String> preenherDados() {
+
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        Data = (String) s.child("data").getValue(String.class);
+                        String flag = (String) s.child("instituicao").getValue(String.class);
+                        String data = getIntent().getStringExtra("data");
+                        String instituicao = getIntent().getStringExtra("ins");
+
+                        if (data.equals(Data) && instituicao.equals(flag)) {
+
+                            Time = s.child("time").getValue().toString();
+                            TipoTreino = s.child("tipoTreino").getValue().toString();
+                            descricao = s.child("descriçao").getValue().toString();
+                            local = s.child("local").getValue().toString();
+                            obs = s.child("obs").getValue().toString();
+                            d = ("\n  Tipo do treino: " + TipoTreino + "\n  Horário do Treino: " + Time
+                                    + "\n  Descrição do treino: " + descricao + "\n  Local:" + local + "\n  Observações: " + obs );
+
+
+                            dados1.add(d);
+                            arrayAdapter = new ArrayAdapter<String>(ViewPdfActivity.this, android.R.layout.simple_list_item_1, dados1);
+                            List.setAdapter(arrayAdapter);
+
+                        } else {
+
+                        }
+
+
+                    }
+
+                } else {
+                    Log.i("MeuLOG", "erro na captura");
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        return dados1;
+    }
+    private ArrayList<String> listarPDF() {
+
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        Data = (String) s.child("data").getValue(String.class);
+                        String flag = (String) s.child("instituicao").getValue(String.class);
+                        String data = getIntent().getStringExtra("data");
+                        String instituicao = getIntent().getStringExtra("ins");
+
+                        if (data.equals(Data) && instituicao.equals(flag)) {
+
+                            Time = s.child("time").getValue().toString();
+                            TipoTreino = s.child("tipoTreino").getValue().toString();
+                            descricao = s.child("descriçao").getValue().toString();
+                            local = s.child("local").getValue().toString();
+                            obs = s.child("obs").getValue().toString();
+                            d = ("\n  Tipo do treino: " + TipoTreino + "\n  Horário do Treino: " + Time
+                                    + "\n  Descrição do treino: " + descricao + "\n  Local:" + local + "\n  Observações: " + obs );
+
+
+                            dados1.add(d);
+
+
+                        } else {
+
+                        }
+
+
+                    }
+
+                } else {
+                    Log.i("MeuLOG", "erro na captura");
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+
+        return dados1;
+    }
+
 
     private void savepdf(String data) {
 
@@ -99,29 +230,44 @@ public class ViewPdfActivity extends AppCompatActivity {
                 paint.setTextSize(35f);
                 paint.setFakeBoldText(false);
 
-                TipoTreino = getIntent().getStringExtra("Tipotreino");
-                Time = getIntent().getStringExtra("Time");
-                local = getIntent().getStringExtra("local");
-                obs = getIntent().getStringExtra("obs");
-                descricao = getIntent().getStringExtra("des");
 
-                canvas.drawText("Nesse dia haverá..", pageInfo.getPageWidth() / 3, 100, paint);
-                canvas.drawText("Tipo treino: " + TipoTreino, pageInfo.getPageWidth() / 7, 230, paint);
-                canvas.drawText("Hora: " + Time, pageInfo.getPageWidth() / 7, 280, paint);
-                canvas.drawText("Local: " + local, pageInfo.getPageWidth() / 7, 330, paint);
-                canvas.drawText("Observação: " + obs, pageInfo.getPageWidth() / 7, 380, paint);
-                canvas.drawText("Descrição do Treino: " + descricao, pageInfo.getPageWidth() / 7, 430, paint);
+                ArrayList<String> array = new ArrayList<String>();
+                array=listarPDF();
 
+                var = 230;
 
+                String[] lis = array.toString().split("  ");
+
+                System.out.println(lis[0]);
+                System.out.println(lis[1]);
+                System.out.println(lis[2]);
+                System.out.println(lis[3]);
+                canvas.drawText("Nesse dia haverá..", pageInfo.getPageWidth() / 3, 150, paint);
+                int count =0;
+                for (int i = 1; i < lis.length-1; i++) {
+
+                    String var2 = lis[i];
+                    canvas.drawText(lis[i]+"\n\n", pageInfo.getPageWidth() / 7, var, paint);
+
+                    var = var + 50;
+
+                    count++;
+                    if (count==5){
+                        var=var+100;
+                        count=0;
+                    }
+
+                }
                 pdfDocument.finishPage(page);
                 gravarPdf(caminhDoArquivo, pdfDocument);
 
             }
         }
     }
+
     @Override
-    public void finish(){
+    public void finish() {
         super.finish();
-        overridePendingTransition(R.xml.mover_esquerda,R.xml.fade_out);
+        overridePendingTransition(R.xml.mover_esquerda, R.xml.fade_out);
     }
 }

@@ -1,10 +1,5 @@
 package com.example.CheckTraining1;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -26,11 +21,17 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.CheckTraining.R;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -42,16 +43,19 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
+
+import Classes.TipoTreino;
 
 public class CalendarioAluno extends AppCompatActivity {
     private Button sair;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private CalendarView calendario;
-    private TextView tv;
+    private TextView tv, tv2;
     private long resul;
     private static final int STORAGE_CODE = 1000;
     private DatabaseReference myRef = database.getInstance().getReference("Treinos");
@@ -63,54 +67,30 @@ public class CalendarioAluno extends AppCompatActivity {
     private String dataFormatada = formataData.format(data1);
     private static final int CREATEPDF = 1;
     Bitmap scale, bitmap;
-    String Data1;
+    String Data1, ins;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String emaill = user.getEmail();
 
     private final int ID_MESSAGE = 2;
     private TextView mess;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-marcadores();
+        marcadores();
         setContentView(R.layout.activity_calendario_aluno);
         sair = (Button) findViewById(R.id.bsair);
         mAuth = FirebaseAuth.getInstance();
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.moldurapdf);
         tv = (TextView) findViewById(R.id.tv);
-
+        tv2 = (TextView) findViewById(R.id.tvuser);
+        message();
         mess = (TextView) findViewById(R.id.mes2);
 
 
-
         MeowBottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
-
-        bottomNavigation.add(new MeowBottomNavigation.Model(ID_MESSAGE, R.drawable.ic_today_black_24dp));
-
-        bottomNavigation.setOnClickMenuListener(new MeowBottomNavigation.ClickListener() {
-            @Override
-            public void onClickItem(MeowBottomNavigation.Model item) {
-                Toast.makeText(CalendarioAluno.this, "Clicked item : " + item.getId(), Toast.LENGTH_SHORT).show();
-
-            }
-        });
-        bottomNavigation.setOnShowListener(new MeowBottomNavigation.ShowListener() {
-            @Override
-            public void onShowItem(MeowBottomNavigation.Model item) {
-                String name;
-                switch (item.getId()) {
-                    case ID_MESSAGE: {
-                        name = "Message";
-
-                    }
-                    break;
-                    default:
-                        name = "";
-                }
-
-            }
-        });
-
-        bottomNavigation.show(ID_MESSAGE, true);
 
 
         final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView2);
@@ -121,7 +101,7 @@ marcadores();
 
         String mth = getMonth.format(data1);
 
-        mth = mth.substring(0,1).toUpperCase().concat(mth.substring(1));
+        mth = mth.substring(0, 1).toUpperCase().concat(mth.substring(1));
         mess.setText(mth);
         compactCalendarView.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
@@ -153,7 +133,7 @@ marcadores();
                 SimpleDateFormat getMonth = new SimpleDateFormat("MMMM - YYYY");
 
                 String mth = getMonth.format(firstDayOfNewMonth);
-                mth = mth.substring(0,1).toUpperCase().concat(mth.substring(1));
+                mth = mth.substring(0, 1).toUpperCase().concat(mth.substring(1));
                 mess.setText(mth);
                 Log.i("MONTH", mth);
             }
@@ -252,18 +232,46 @@ marcadores();
     private void resgatar(String d) {
 
         DATA = d;
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference refe = FirebaseDatabase.getInstance().getReference();
+        refe.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
-                        Data = (String) s.child("data").getValue(String.class);
+                        String var = s.child("email").getValue().toString();
 
-                        if (DATA.equals(Data)) {
+                        if (emaill.equals(var)) {
+                            ins = (String) s.child("instituição").getValue();
+                        } else {
+                            System.out.println("algo errado");
+                        }
+                    }
+
+                } else {
+                    Log.i("MeuLOG", "erro na captura");
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        Data = (String) s.child("data").getValue(String.class);
+                        String flag = (String) s.child("instituicao").getValue(String.class);
+
+
+                        if (DATA.equals(Data) && ins.equals(flag)) {
                             tv.setText("O treino deste dia é:");
                             Time = s.child("time").getValue().toString();
                             TipoTreino = s.child("tipoTreino").getValue().toString();
@@ -271,8 +279,20 @@ marcadores();
                             local = s.child("local").getValue().toString();
                             obs = s.child("obs").getValue().toString();
 
-                            // tv.setText("Tipo do treino: " + TipoTreino + "\nHorário do Treino: " + Time + "h\nDescrição do treino: " + descricao + "\nLocal:" + local + "\nObservações: " + obs);
-                            ExibirDados(TipoTreino, Time, descricao, local, obs);
+                            String dados = ("Tipo do treino: " + TipoTreino + "\nHorário do Treino: " + Time + "h\nDescrição do treino: " + descricao + "\nLocal:" + local + "\nObservações: " + obs);
+                            Intent Intent = new Intent(getApplicationContext(), ViewPdfActivity.class);
+                            Intent.putExtra("dados", dados);
+                            Intent.putExtra("data", Data1);
+                            Intent.putExtra("Tipotreino", TipoTreino);
+                            Intent.putExtra("Time", Time);
+                            Intent.putExtra("des", descricao);
+                            Intent.putExtra("local", local);
+                            Intent.putExtra("obs", obs);
+                            Intent.putExtra("ins",ins);
+
+
+                            startActivity(Intent);
+                            finish();
 
                         } else {
                             tv.setText("Não ha Treinos nessa data!");
@@ -296,41 +316,14 @@ marcadores();
         });
     }
 
-    private void ExibirDados(final String TipoTreino, final String Time, final String descricao, final String local, final String obs) {
-        AlertDialog.Builder box = new AlertDialog.Builder(this);
 
-        box.setTitle("Nesta data haverá:");
-        box.setMessage("Tipo do treino: " + TipoTreino + "\nHorário do Treino: " + Time + "h\nDescrição do treino: " + descricao + "\nLocal:" + local + "\nObservações: " + obs);
-        box.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(CalendarioAluno.this, "Ok!", Toast.LENGTH_SHORT).show();
-            }
-        });
-        box.setPositiveButton("Visualizar em outra tela", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String dados = ("Tipo do treino: " + TipoTreino + "\nHorário do Treino: " + Time + "h\nDescrição do treino: " + descricao + "\nLocal:" + local + "\nObservações: " + obs);
-                Intent Intent = new Intent(getApplicationContext(), ViewPdfActivity.class);
-                Intent.putExtra("dados", dados);
-                Intent.putExtra("data", Data1);
-                Intent.putExtra("Tipotreino", TipoTreino);
-                Intent.putExtra("Time", Time);
-                Intent.putExtra("des", descricao);
-                Intent.putExtra("local", local);
-                Intent.putExtra("obs", obs);
-                startActivity(Intent);
-                finish();
-            }
-        });
-        box.show();
-    }
 
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.xml.mover_esquerda, R.xml.fade_out);
     }
+
     private long DataMilis(String mes, String dia, String ano) {
         Calendar calendario1 = Calendar.getInstance();
 
@@ -357,42 +350,79 @@ marcadores();
     }
 
     private void marcadores() {
+        DatabaseReference refe = FirebaseDatabase.getInstance().getReference();
+        refe.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        String var = s.child("email").getValue().toString();
+
+                        if (emaill.equals(var)) {
+                            ins = (String) s.child("instituição").getValue();
+
+
+                        } else {
+                            System.out.println("algo errado");
+                        }
+
+
+                    }
+
+                } else {
+                    Log.i("MeuLOG", "erro na captura");
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        String flag = s.child("instituicao").getValue().toString();
                         Data = (String) s.child("data").getValue(String.class);
-
-                        final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView2);
-                        compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
-                        compactCalendarView.setUseThreeLetterAbbreviation(true);
-
-
-                        String frase = Data.toString();
-                        frase = frase.replaceAll("/", "");
-                        frase = frase.replaceAll(" ", "");
+                        if (ins.equals(flag)) {
+                            final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView2);
+                            compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
+                            compactCalendarView.setUseThreeLetterAbbreviation(true);
 
 
+                            String frase = Data.toString();
+                            frase = frase.replaceAll("/", "");
+                            frase = frase.replaceAll(" ", "");
 
-                        String num = frase.substring(0, 2);
-                        String m = frase.substring(2, 4);
-                        String ano = frase.substring(4);
+
+                            String num = frase.substring(0, 2);
+                            String m = frase.substring(2, 4);
+                            String ano = frase.substring(4);
 
 
-                        resul = DataMilis(m, num, ano);
+                            resul = DataMilis(m, num, ano);
 
-                        Event ev1 = new Event(Color.GREEN, resul, "Some extra data that I want to store.");
-                        compactCalendarView.addEvent(ev1);
+                            Event ev1 = new Event(Color.GREEN, resul, "Some extra data that I want to store.");
+                            compactCalendarView.addEvent(ev1);
+                            resul = 0;
+                        } else {
 
-                        resul = 0;
+                        }
                     }
-
                 } else {
                     Log.i("MeuLOG", "erro na captura");
-                    System.out.println(DATA);
+
+
 
                 }
             }
@@ -404,6 +434,43 @@ marcadores();
         });
 
 
+    }
+
+    public void message() {
+        DatabaseReference refe = FirebaseDatabase.getInstance().getReference();
+        refe.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        String var = s.child("email").getValue().toString();
+
+                        if (emaill.equals(var)) {
+                            ins = (String) s.child("nome").getValue();
+                            tv2.setText("Olá,  " + ins);
+
+
+                        } else {
+
+                        }
+
+
+                    }
+
+                } else {
+                    Log.i("MeuLOG", "erro na captura");
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
     }
 
 }

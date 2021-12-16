@@ -38,6 +38,7 @@ import com.example.CheckTraining.R;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
 import com.github.sundeepk.compactcalendarview.domain.Event;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -77,18 +78,43 @@ public class CalendarioActivity extends AppCompatActivity {
     private String dataFormatada = formataData.format(data1);
     private static final int CREATEPDF = 1;
     Bitmap scale, bitmap;
-    private Button deletar;
+    private Button deletar,next,retur;
     private TextView mess;
-    String Data1;
-
+    String Data1, ins;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    String emaill = user.getEmail();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendario);
         marcadores();
+        next = (Button) findViewById(R.id.buttonnext);
+        retur= (Button)findViewById(R.id.ButtonReturn);
+        final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView);
+        compactCalendarView.setFirstDayOfWeek(Calendar.MONTH);
+
+        compactCalendarView.setUseThreeLetterAbbreviation(true);
+        final SimpleDateFormat getMonth = new SimpleDateFormat("MMMM - YYYY");
+
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compactCalendarView.scrollLeft();
+
+            }
+        });
+
+        retur.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compactCalendarView.scrollRight();
+
+            }
+        });
         DatabaseReference scoresRef = FirebaseDatabase.getInstance().getReference("Treinos");
         scoresRef.keepSynced(true);
+
 
         MeowBottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
         bottomNavigation.add(new MeowBottomNavigation.Model(ID_Home, R.drawable.ic_home_black_24dp));
@@ -97,9 +123,7 @@ public class CalendarioActivity extends AppCompatActivity {
         bottomNavigation.setOnClickMenuListener(new MeowBottomNavigation.ClickListener() {
             @Override
             public void onClickItem(MeowBottomNavigation.Model item) {
-                Toast.makeText(CalendarioActivity.this, "Clicked item : " + item.getId(), Toast.LENGTH_SHORT).show();
-
-            }
+                           }
         });
         bottomNavigation.setOnShowListener(new MeowBottomNavigation.ShowListener() {
             @Override
@@ -143,15 +167,11 @@ public class CalendarioActivity extends AppCompatActivity {
         mess = (TextView) findViewById(R.id.mes);
 
 
-        final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView);
-        compactCalendarView.setFirstDayOfWeek(Calendar.MONTH);
 
-        compactCalendarView.setUseThreeLetterAbbreviation(true);
-        SimpleDateFormat getMonth = new SimpleDateFormat("MMMM - YYYY");
 
         String mth = getMonth.format(data1);
 
-        mth = mth.substring(0,1).toUpperCase().concat(mth.substring(1));
+        mth = mth.substring(0, 1).toUpperCase().concat(mth.substring(1));
         mess.setText(mth);
 
 
@@ -187,7 +207,7 @@ public class CalendarioActivity extends AppCompatActivity {
                 SimpleDateFormat getMonth = new SimpleDateFormat("MMMM - YYYY");
 
                 String mth = getMonth.format(firstDayOfNewMonth);
-                mth = mth.substring(0,1).toUpperCase().concat(mth.substring(1));
+                mth = mth.substring(0, 1).toUpperCase().concat(mth.substring(1));
                 mess.setText(mth);
                 Log.i("MONTH", mth);
             }
@@ -222,7 +242,9 @@ public class CalendarioActivity extends AppCompatActivity {
                                         if (delet.getText().toString().equals(Data)) {
                                             myRef.child(s.getKey()).removeValue();
 
-                                            Toast.makeText(CalendarioActivity.this, "Removido", Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(CalendarioActivity.this, "Treino excluído!", Toast.LENGTH_SHORT).show();
+                                        }else{
+                                            Toast.makeText(CalendarioActivity.this, "Erro! Verifique a data digitada!", Toast.LENGTH_SHORT).show();
                                         }
 
 
@@ -334,25 +356,74 @@ public class CalendarioActivity extends AppCompatActivity {
     private void resgatar(String d) {
 
         DATA = d;
-
-
-        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-        ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference refe = FirebaseDatabase.getInstance().getReference();
+        refe.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
 
                 if (dataSnapshot.exists()) {
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        String var = s.child("email").getValue().toString();
+
+                        if (emaill.equals(var)) {
+                            ins = (String) s.child("instituição").getValue();
+
+
+                        } else {
+
+                        }
+
+
+                    }
+
+                } else {
+                    Log.i("MeuLOG", "erro na captura");
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
+        DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
+        ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
                         Data = (String) s.child("data").getValue(String.class);
-                        if (DATA.equals(Data)) {
-                            tv.setText("O treino deste dia é:");
+                        String flag = (String) s.child("instituicao").getValue(String.class);
+
+
+                        if (DATA.equals(Data) && ins.equals(flag)) {
+
                             Time = s.child("time").getValue().toString();
                             TipoTreino = s.child("tipoTreino").getValue().toString();
                             descricao = s.child("descriçao").getValue().toString();
                             local = s.child("local").getValue().toString();
                             obs = s.child("obs").getValue().toString();
-                            ExibirDados(TipoTreino, Time, descricao, local, obs);
+                            tv.setText("O treino deste dia é:");
+
+                            String dados = ("Tipo do treino: " + TipoTreino + "\nHorário do Treino: " + Time + "h\nDescrição do treino: " + descricao + "\nLocal:" + local + "\nObservações: " + obs);
+                            Intent Intent = new Intent(getApplicationContext(), ViewPdfActivity.class);
+                            Intent.putExtra("dados", dados);
+                            Intent.putExtra("data", Data1);
+                            Intent.putExtra("Tipotreino", TipoTreino);
+                            Intent.putExtra("Time", Time);
+                            Intent.putExtra("des", descricao);
+                            Intent.putExtra("local", local);
+                            Intent.putExtra("obs", obs);
+                            Intent.putExtra("ins",ins);
+
+                            startActivity(Intent);
+                            finish();
+
 
                         } else {
                             tv.setText("Não ha Treinos nessa data!");
@@ -376,38 +447,6 @@ public class CalendarioActivity extends AppCompatActivity {
         });
     }
 
-    private void ExibirDados(final String TipoTreino, final String Time, final String descricao, final String local, final String obs) {
-        AlertDialog.Builder box = new AlertDialog.Builder(this);
-
-        box.setTitle("Nesta data haverá:");
-        box.setMessage("Tipo do treino: " + TipoTreino + "\nHorário do Treino: " + Time + "h\nDescrição do treino: " + descricao + "\nLocal:" + local + "\nObservações: " + obs);
-        box.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Toast.makeText(CalendarioActivity.this, "Ok!", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        box.setPositiveButton("Visualizar em outra tela", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String dados = ("Tipo do treino: " + TipoTreino + "\nHorário do Treino: " + Time + "h\nDescrição do treino: " + descricao + "\nLocal:" + local + "\nObservações: " + obs);
-                Intent Intent = new Intent(getApplicationContext(), ViewPdfActivity.class);
-                Intent.putExtra("dados", dados);
-                Intent.putExtra("data", Data1);
-                Intent.putExtra("Tipotreino", TipoTreino);
-                Intent.putExtra("Time", Time);
-                Intent.putExtra("des", descricao);
-                Intent.putExtra("local", local);
-                Intent.putExtra("obs", obs);
-                startActivity(Intent);
-                finish();
-            }
-        });
-
-
-        box.show();
-    }
 
     @Override
     public void finish() {
@@ -441,39 +480,76 @@ public class CalendarioActivity extends AppCompatActivity {
     }
 
     private void marcadores() {
+        DatabaseReference refe = FirebaseDatabase.getInstance().getReference();
+        refe.child("Usuarios").addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.exists()) {
+                    for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        String var = s.child("email").getValue().toString();
+
+                        if (emaill.equals(var)) {
+                            ins = (String) s.child("instituição").getValue();
+
+
+                        } else {
+                            System.out.println("algo errado");
+                        }
+
+
+                    }
+
+                } else {
+                    Log.i("MeuLOG", "erro na captura");
+
+
+                }
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+            }
+        });
+
 
         DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
         ref.child("Treinos").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()) {
+
                     for (DataSnapshot s : dataSnapshot.getChildren()) {
+                        String flag = s.child("instituicao").getValue().toString();
                         Data = (String) s.child("data").getValue(String.class);
+                        if (ins.equals(flag)) {
+                            final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView);
+                            compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
+                            compactCalendarView.setUseThreeLetterAbbreviation(true);
 
-                        final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView);
-                        compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
-                        compactCalendarView.setUseThreeLetterAbbreviation(true);
+
+                            String frase = Data.toString();
+                            frase = frase.replaceAll("/", "");
+                            frase = frase.replaceAll(" ", "");
 
 
-                        String frase = Data.toString();
-                        frase = frase.replaceAll("/", "");
-                        frase = frase.replaceAll(" ", "");
 
-                        System.out.println(frase.length());
-                        System.out.println(frase);
+                            String num = frase.substring(0, 2);
+                            String m = frase.substring(2, 4);
+                            String ano = frase.substring(4);
+                            System.out.println(ano + "alo");
 
-                        String num = frase.substring(0, 2);
-                        String m = frase.substring(2, 4);
-                        String ano = frase.substring(4);
-                        System.out.println(ano + "alo");
+                            resul = DataMilis(m, num, ano);
 
-                        resul = DataMilis(m, num, ano);
-
-                        Event ev1 = new Event(Color.GREEN, resul, "Some extra data that I want to store.");
-                        compactCalendarView.addEvent(ev1);
-                        resul = 0;
+                            Event ev1 = new Event(Color.GREEN, resul, "Some extra data that I want to store.");
+                            compactCalendarView.addEvent(ev1);
+                            resul = 0;
+                        }else{
+                            System.out.println("DEU ErraDO");
+                        }
                     }
-
                 } else {
                     Log.i("MeuLOG", "erro na captura");
                     System.out.println(DATA);

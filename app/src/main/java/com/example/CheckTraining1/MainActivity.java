@@ -149,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
                                     System.out.println(s.child("flag").getValue().toString());
                                     if (user.equals(s.child("email").getValue().toString())) {
                                         String flag1 = s.child("flag").getValue().toString();
-                                        System.out.println(flag1+"TO AQUI MISERAVI");
+
                                         if (flag1.equals("true")) {
                                             openPrincipalActivity();
                                         }else {
@@ -176,13 +176,13 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("TAG", "signInWithEmail:success");
                     FirebaseUser user = mAuth.getCurrentUser();
 
-                    Toast.makeText(MainActivity.this, "Login ok", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "Bem vindo!", Toast.LENGTH_SHORT).show();
 
 
                 } else {
                     // If sign in fails, display a message to the user.
                     Log.w("TAG", "signInWithEmail:failure", task.getException());
-                    Toast.makeText(getApplicationContext(), "Authentication failed.",
+                    Toast.makeText(getApplicationContext(), "Autenticação falhou.",
                             Toast.LENGTH_SHORT).show();
 
                 }

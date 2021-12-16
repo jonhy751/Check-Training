@@ -14,8 +14,8 @@
 
     <string name="home_second">Home Second</string>
     <string-array name="Institutos">
-        <item>"IFRN PF"</item>
-        <item>"IFRN CN"</item>
-        <item>"Cadastre uma"</item>
+        <item>"IFRN-PF"</item>
+        <item>"IFRN-CN"</item>
+
     </string-array>
 </resources>
