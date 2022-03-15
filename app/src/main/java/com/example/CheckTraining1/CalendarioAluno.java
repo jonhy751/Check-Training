@@ -51,7 +51,7 @@ import java.util.Objects;
 import Classes.TipoTreino;
 
 public class CalendarioAluno extends AppCompatActivity {
-    private Button sair;
+    private Button sair,next,retur;
     private FirebaseAuth mAuth;
     private FirebaseDatabase database = FirebaseDatabase.getInstance();
     private CalendarView calendario;
@@ -88,6 +88,8 @@ public class CalendarioAluno extends AppCompatActivity {
         tv2 = (TextView) findViewById(R.id.tvuser);
         message();
         mess = (TextView) findViewById(R.id.mes2);
+        next = (Button) findViewById(R.id.buttonnext);
+        retur= (Button)findViewById(R.id.ButtonReturn);
 
 
         MeowBottomNavigation bottomNavigation = findViewById(R.id.bottomNavigation);
@@ -96,7 +98,21 @@ public class CalendarioAluno extends AppCompatActivity {
         final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView2);
         compactCalendarView.setFirstDayOfWeek(Calendar.MONDAY);
         compactCalendarView.setUseThreeLetterAbbreviation(true);
+        next.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compactCalendarView.scrollLeft();
 
+            }
+        });
+
+        retur.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                compactCalendarView.scrollRight();
+
+            }
+        });
         SimpleDateFormat getMonth = new SimpleDateFormat("MMMM - YYYY");
 
         String mth = getMonth.format(data1);

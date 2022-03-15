@@ -1,15 +1,7 @@
 package Classes;
 
 public class TipoTreino {
-    private String TipoTreino;
-    private String data;
-    private String time;
-    private String descriçao;
-    private String local;
-    private String obs;
-    private String instituicao;
-
-
+    private String TipoTreino, data, time, descriçao, local, obs, instituicao;
 
     public String getTipoTreino() {
         return TipoTreino;
@@ -18,7 +10,6 @@ public class TipoTreino {
     public void setTipoTreino(String tipoTreino) {
         TipoTreino = tipoTreino;
     }
-
 
 
     public String getDescriçao() {
@@ -82,7 +73,6 @@ public class TipoTreino {
 
     public TipoTreino(String tipoTreino, String time, String descricao, String local, String obs, String ins) {
     }
-
 
 
 }

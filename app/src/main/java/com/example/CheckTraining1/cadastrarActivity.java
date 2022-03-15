@@ -1,18 +1,16 @@
 package com.example.CheckTraining1;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.CheckTraining.R;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -25,21 +23,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import Classes.User;
 
 public class cadastrarActivity extends AppCompatActivity {
 
-    private EditText email;
-    private EditText senha, rep, nome;
+    private EditText email, senha, rep, nome;
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
-
     private FirebaseDatabase fb = FirebaseDatabase.getInstance();
     private DatabaseReference myRef = fb.getReference("Usuarios");
-    private Button Cadastrar;
+    private Button Cadastrar, voltar;
     private Spinner sp;
 
     @Override
@@ -52,11 +44,17 @@ public class cadastrarActivity extends AppCompatActivity {
         nome = (EditText) findViewById(R.id.editCnome);
         rep = (EditText) findViewById(R.id.editRep);
         sp = (Spinner) findViewById(R.id.spinner);
+        voltar = (Button) findViewById(R.id.bvoltar);
 
-        if (mAuth.getCurrentUser() != null) {
 
-        }
-
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Intent = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(Intent);
+                finish();
+            }
+        });
 
         Cadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,22 +62,18 @@ public class cadastrarActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty((email.getText().toString()))) {
                     email.setError("Necessario Email!");
                     return;
-                }
-                if (TextUtils.isEmpty(senha.getText().toString())) {
+                }else if (TextUtils.isEmpty(senha.getText().toString())) {
                     senha.setError("Necessario senha!");
                     return;
-                }
-                if (senha.getText().toString().length() < 6) {
+                }else if (senha.getText().toString().length() < 6) {
                     senha.setError("Necessario senha de 6 digitos!");
                     return;
-                }
-                if (senha.getText().toString().equals(rep.getText().toString())) {
+                }else if (senha.getText().toString().equals(rep.getText().toString())) {
 
                 } else {
                     rep.setError("Senha diferentes!");
                     return;
-                }
-                if (TextUtils.isEmpty((nome.getText().toString()))) {
+                } if (TextUtils.isEmpty((nome.getText().toString()))) {
                     nome.setError("Necessario nome!");
                     return;
                 }
@@ -89,7 +83,6 @@ public class cadastrarActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             String flag = "false";
-
                             User user = new User(email.getText().toString(), senha.getText().toString(), nome.getText().toString(), flag.toString(), sp.getSelectedItem().toString());
                             fb.getReference("Usuarios")
                                     .child(nome.getText().toString()).setValue(user).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -123,13 +116,10 @@ public class cadastrarActivity extends AppCompatActivity {
                                         }
                                     }
                                 }
-
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
                                 }
                             });
-
                         } else {
                             Toast.makeText(cadastrarActivity.this, "Erro no cadastro", Toast.LENGTH_SHORT).show();
                         }
@@ -138,7 +128,6 @@ public class cadastrarActivity extends AppCompatActivity {
             }
         });
     }
-
 
 
 }

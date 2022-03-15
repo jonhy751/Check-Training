@@ -1,16 +1,5 @@
 package com.example.CheckTraining1;
 
-import androidx.annotation.NonNull;
-
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
-import java.text.SimpleDateFormat;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -33,6 +22,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+
 import com.etebarian.meowbottomnavigation.MeowBottomNavigation;
 import com.example.CheckTraining.R;
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
@@ -45,7 +39,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -64,25 +62,19 @@ public class CalendarioActivity extends AppCompatActivity {
     private DatabaseReference myRef;
     private long resul;
     private ListView li;
-    private String Data;
-    private String obs;
-    private String Time;
-    private String TipoTreino;
-    private String DATA;
-    private String descricao;
-    private String local;
-    private String data2;
+    private String Data, obs, Time, TipoTreino, DATA, descricao, local, data2, Data1, ins;
+
     private Bitmap bm, sbm;
     private SimpleDateFormat formataData = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
     private Date data1 = new Date();
     private String dataFormatada = formataData.format(data1);
     private static final int CREATEPDF = 1;
     Bitmap scale, bitmap;
-    private Button deletar,next,retur;
+    private Button deletar, next, retur, voltar;
     private TextView mess;
-    String Data1, ins;
-    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-    String emaill = user.getEmail();
+
+    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String emaill = user.getEmail();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,13 +82,21 @@ public class CalendarioActivity extends AppCompatActivity {
         setContentView(R.layout.activity_calendario);
         marcadores();
         next = (Button) findViewById(R.id.buttonnext);
-        retur= (Button)findViewById(R.id.ButtonReturn);
+        retur = (Button) findViewById(R.id.ButtonReturn);
+        voltar = (Button) findViewById(R.id.bvoltar);
         final CompactCalendarView compactCalendarView = (CompactCalendarView) findViewById(R.id.calendarView);
         compactCalendarView.setFirstDayOfWeek(Calendar.MONTH);
 
         compactCalendarView.setUseThreeLetterAbbreviation(true);
         final SimpleDateFormat getMonth = new SimpleDateFormat("MMMM - YYYY");
-
+        voltar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent Intent = new Intent(getApplicationContext(), PrincipalActivity.class);
+                startActivity(Intent);
+                finish();
+            }
+        });
         next.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -123,7 +123,7 @@ public class CalendarioActivity extends AppCompatActivity {
         bottomNavigation.setOnClickMenuListener(new MeowBottomNavigation.ClickListener() {
             @Override
             public void onClickItem(MeowBottomNavigation.Model item) {
-                           }
+            }
         });
         bottomNavigation.setOnShowListener(new MeowBottomNavigation.ShowListener() {
             @Override
@@ -165,8 +165,6 @@ public class CalendarioActivity extends AppCompatActivity {
         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.moldurapdf);
         mAuth = FirebaseAuth.getInstance();
         mess = (TextView) findViewById(R.id.mes);
-
-
 
 
         String mth = getMonth.format(data1);
@@ -243,7 +241,7 @@ public class CalendarioActivity extends AppCompatActivity {
                                             myRef.child(s.getKey()).removeValue();
 
                                             Toast.makeText(CalendarioActivity.this, "Treino excluído!", Toast.LENGTH_SHORT).show();
-                                        }else{
+                                        } else {
                                             Toast.makeText(CalendarioActivity.this, "Erro! Verifique a data digitada!", Toast.LENGTH_SHORT).show();
                                         }
 
@@ -419,7 +417,7 @@ public class CalendarioActivity extends AppCompatActivity {
                             Intent.putExtra("des", descricao);
                             Intent.putExtra("local", local);
                             Intent.putExtra("obs", obs);
-                            Intent.putExtra("ins",ins);
+                            Intent.putExtra("ins", ins);
 
                             startActivity(Intent);
                             finish();
@@ -535,7 +533,6 @@ public class CalendarioActivity extends AppCompatActivity {
                             frase = frase.replaceAll(" ", "");
 
 
-
                             String num = frase.substring(0, 2);
                             String m = frase.substring(2, 4);
                             String ano = frase.substring(4);
@@ -546,7 +543,7 @@ public class CalendarioActivity extends AppCompatActivity {
                             Event ev1 = new Event(Color.GREEN, resul, "Some extra data that I want to store.");
                             compactCalendarView.addEvent(ev1);
                             resul = 0;
-                        }else{
+                        } else {
                             System.out.println("DEU ErraDO");
                         }
                     }

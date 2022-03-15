@@ -35,7 +35,7 @@ import java.util.Objects;
 
 public class ViewPdfActivity extends AppCompatActivity {
     TextView tv, tvdata;
-    Button salvar;
+    Button salvar,voltar;
     private static final int CREATEPDF = 1;
     Bitmap scale, bitmap;
     String dados, d;
@@ -238,10 +238,6 @@ public class ViewPdfActivity extends AppCompatActivity {
 
                 String[] lis = array.toString().split("  ");
 
-                System.out.println(lis[0]);
-                System.out.println(lis[1]);
-                System.out.println(lis[2]);
-                System.out.println(lis[3]);
                 canvas.drawText("Nesse dia haverá..", pageInfo.getPageWidth() / 3, 150, paint);
                 int count =0;
                 for (int i = 1; i < lis.length-1; i++) {

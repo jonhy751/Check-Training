@@ -31,10 +31,10 @@ public class CadastrarTreinosActivity extends AppCompatActivity {
     private FirebaseAuth auth;
 
     private DatabaseReference myRef = database.getReference("Treinos");
-    EditText treino, data, time, descricao, local, obs;
+    private EditText treino, data, time, descricao, local, obs;
     private TipoTreino tipoTreino;
-    Button cadastrar, voltar;
-    String flag;
+    private Button cadastrar, voltar;
+    private String flag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,9 +56,6 @@ public class CadastrarTreinosActivity extends AppCompatActivity {
         SimpleMaskFormatter tm = new SimpleMaskFormatter("NN:NN");
         MaskTextWatcher mask = new MaskTextWatcher(time, tm);
         time.addTextChangedListener(mask);
-
-
-
         descricao = (EditText) findViewById(R.id.edescricao);
         local = (EditText) findViewById(R.id.elocal);
         obs = (EditText) findViewById(R.id.eobs);
